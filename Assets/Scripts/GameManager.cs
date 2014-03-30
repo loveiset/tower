@@ -15,9 +15,26 @@ public class GameManager : MonoBehaviour {
     GUIText m_text_life;
     GUIText m_text_point;
 
+    public bool m_debug = false;
+    public ArrayList m_pathNodes;
+
     void Awake()
     {
         Instance = this;
+    }
+
+    [ContextMenu("BuildPath")]
+    void BuildPath()
+    {
+        m_pathNodes = new ArrayList();
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("pathnode");
+
+        for (int i = 0; i < objs.Length; i++)
+        {
+            PathNode node = objs[i].GetComponent<PathNode>();
+            m_pathNodes.Add(node);
+        }
+
     }
 
 
@@ -50,14 +67,30 @@ public class GameManager : MonoBehaviour {
         m_text_wave.text = "<color=red>wave</color>" + m_wave;
     }
 
-    public void SetLife(int life)
+    public void SetDamage(int damage)
     {
-        m_life = life;
+        m_life -= damage;
         m_text_life.text = "<color=red>life</color>" + m_life;
     }
     public void SetPoint(int point)
     {
         m_point += point;
         m_text_point.text = "<color=red>point</color>" + m_point;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (!m_debug || m_pathNodes == null)
+        {
+            return;
+        }
+        Gizmos.color = Color.blue;
+        foreach (PathNode node in m_pathNodes)
+        {
+            if (node.m_next != null)
+            {
+                Gizmos.DrawLine(node.transform.position, node.m_next.transform.position);
+            }
+        }
     }
 }
