@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
+    public Transform m_lifeBarObject;
+    protected LifeBar m_bar;
     public EnemySpawner m_spawn;
     public PathNode m_currentNode;
 
@@ -20,6 +22,11 @@ public class Enemy : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         m_spawn.m_liveEnemy++;
+        GameManager.Instance.m_enemyList.Add(this);
+        Transform obj = (Transform)Instantiate(m_lifeBarObject, this.transform.position, Quaternion.identity);
+
+        m_bar = obj.GetComponent<LifeBar>();
+        m_bar.Ini(m_life, m_maxLife, 2, 0.2f);
     }
 
     void OnDisable()
@@ -27,6 +34,14 @@ public class Enemy : MonoBehaviour {
         if (m_spawn)
         {
             m_spawn.m_liveEnemy--;
+        }
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.m_enemyList.Remove(this);
+        }
+        if (m_bar)
+        {
+            Destroy(m_bar.gameObject);
         }
     }
 	
@@ -67,5 +82,22 @@ public class Enemy : MonoBehaviour {
         
 
         this.transform.Translate(new Vector3(0, 0, m_speed * Time.deltaTime));
+        m_bar.SetPosition(this.transform.position, 4.0f);
+    }
+    public void SetDamage(int damage)
+    {
+        m_life -= damage;
+
+        if (m_life <= 0)
+        {
+            GameManager.Instance.m_enemyList.Remove(this);
+            GameManager.Instance.SetPoint(2);
+            Destroy(this.gameObject);
+
+        }
+        else
+        {
+            m_bar.UpdateLife(m_life, m_maxLife);
+        }
     }
 }

@@ -48,12 +48,15 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\AirEnemy.cs" />
      <Compile Include="Assets\Scripts\CameraPoint.cs" />
+     <Compile Include="Assets\Scripts\Defender.cs" />
      <Compile Include="Assets\Scripts\Enemy.cs" />
      <Compile Include="Assets\Scripts\EnemySpawner.cs" />
+     <Compile Include="Assets\Scripts\GUIButton.cs" />
      <Compile Include="Assets\Scripts\GameCamera.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\GridMap.cs" />
      <Compile Include="Assets\Scripts\GridNode.cs" />
+     <Compile Include="Assets\Scripts\LifeBar.cs" />
      <Compile Include="Assets\Scripts\PathNode.cs" />
      <None Include="Assets\Rawdata\enemy.xml" />
   </ItemGroup>
